@@ -1,6 +1,6 @@
 <?php
 // namespace person;
-include 'dice.php';
+// include 'dice.php';
 Class person{
     private $attack;
     private $defense;
@@ -150,13 +150,29 @@ Class person{
         return $this;
     }
 
-    public function Initiative($dice,$human,$orc){
-        $ini    = roll($dice);
-        $human_s  = $ini+$human;
-        $orc_s    = $ini+$orc;
-
+    public function Initiative($dice_human,$agility_human,$dice_orc,$agility_orc){
+        $orc_s =  intval($dice_orc) + intval($agility_orc);
+        $human_s =  intval($dice_human) + intval($agility_human);
+        echo "orc=".$orc_s."hum=".$human_s.PHP_EOL;
         if($human_s == $orc_s){
-            Initiative($dice, $human, $orc);
+            $dice_human    = roll(20);
+            $dice_orc    = roll(20);
+            self::Initiative($dice_human,$agility_human,$dice_orc,$agility_orc);
+        }elseif($human_s > $orc_s){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function Attack($dice_human,$agility_human,$dice_orc,$agility_orc){
+        $orc_s =  intval($dice_orc) + intval($agility_orc);
+        $human_s =  intval($dice_human) + intval($agility_human);
+        echo "orc=".$orc_s."hum=".$human_s.PHP_EOL;
+        if($human_s == $orc_s){
+            $dice_human    = roll(20);
+            $dice_orc    = roll(20);
+            self::Initiative($dice_human,$agility_human,$dice_orc,$agility_orc);
         }elseif($human_s > $orc_s){
             return true;
         }else{

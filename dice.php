@@ -1,8 +1,8 @@
 <?php
-// namespace dice;
 
 function roll ($sides = 6 ) {
-    return mt_rand(1,$sides);
+    unset($dice);
+    $dice =  mt_rand(1,$sides);
+    echo "Dice = ".$dice.PHP_EOL;
+    return $dice;
 }
-
-// echo roll(8);
