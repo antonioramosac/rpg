@@ -1,5 +1,8 @@
 <?php
 namespace rpg;
+
+header('Access-Control-Allow-Origin: *');
+header('Content-type: application/json');
 /**
  * This is a RPG that runs auto.
  * @author Antonio Ramos <antonioramos.ac@gmail.com>
@@ -19,16 +22,18 @@ $human = new person(12,2,1,$sword);
 $orc = new person(20,0,2,$clave);
 $rules = new rules();
 $winner     = false;
+$message    = array("message"=>"");
 
 while($winner == false){
     echo "START TURN".PHP_EOL;
+    $message['message'] .= "START TURN\n";
     $roll_human = dice::roll(20,'Human ');
     $roll_orc   = dice::roll(20,'Orc ');
     $human->setStart(false);
     $orc->setStart(false);
     $human->setWinner(false);
     $orc->setWinner(false);
-    $init_result = $rules->initiative($roll_human, $human, $roll_orc, $orc);
+    $init_result = $rules->initiative($roll_human, $human, $roll_orc, $orc, $message);
 
     if($init_result){
         echo "Human Start".PHP_EOL;
@@ -37,6 +42,10 @@ while($winner == false){
         echo "Orc start".PHP_EOL;
         $orc->setStart(true);
     }
-    $rules->attack($human,$orc);
+    $return = $rules->attack($human,$orc,$message);
+    $message['message'] .= "END TURN\n";
+    $d= json_decode($return);
+    $winner = isset($d->message) ? true:false;
+    var_dump($return); 
     echo "END TURN".PHP_EOL;
 }
