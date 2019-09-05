@@ -1,38 +1,42 @@
 <?php
+namespace rpg;
+/**
+ * This is a RPG that runs auto.
+ * @author Antonio Ramos <antonioramos.ac@gmail.com>
+ * @since 05/09/2019
+ * 
+ * 
+ */
+
 include 'dice.php';
-// include 'orc.php';
-// include 'human.php';
 include "person.php";
+include "rules.php";
+include "weapon.php";
 
+$sword = new weapon(2,1,6);
+$clave = new weapon(1,0,8);
+$human = new person(12,2,1,$sword);
+$orc = new person(20,0,2,$clave);
+$rules = new rules();
+$winner     = false;
 
-// function Initiative($dice,$human,$orc){
-//     $ini    = roll($dice);
-//     $human_s  = $ini+$human->ini;
-//     $orc_s    = $ini+$orc->ini;
+while($winner == false){
+    echo "START TURN".PHP_EOL;
+    $roll_human = dice::roll(20,'Human ');
+    $roll_orc   = dice::roll(20,'Orc ');
+    $human->setStart(false);
+    $orc->setStart(false);
+    $human->setWinner(false);
+    $orc->setWinner(false);
+    $init_result = $rules->initiative($roll_human, $human, $roll_orc, $orc);
 
-//     if($human_s == $orc_s){
-//         Initiative($dice, $human, $orc);
-//     }elseif($human_s > $orc_s){
-//         $human->start = true;
-//     }else{
-//         $orc->start = true;
-//     }
-// }
-
-$human = new person();
-$orc = new person();
-$human->setLife(12);
-$human->setAgility(2);
-$human->setStraight(1);
-$orc->setLife(20);
-$orc->setAgility(0);
-$orc->setStraight(2);
-
-$roll_human    = roll(20);
-$roll_orc    = roll(20);
-
-$init_result = $human::Initiative($roll_human, $human->getAgility(), $roll_orc, $orc->getAgility());
-
-
-echo $init_result.PHP_EOL;
-// echo $orc_result.PHP_EOL;
+    if($init_result){
+        echo "Human Start".PHP_EOL;
+        $human->setStart(true);
+    }else{
+        echo "Orc start".PHP_EOL;
+        $orc->setStart(true);
+    }
+    $rules->attack($human,$orc);
+    echo "END TURN".PHP_EOL;
+}

@@ -1,15 +1,36 @@
 <?php
-// namespace person;
-// include 'dice.php';
-Class person{
-    private $attack;
-    private $defense;
+namespace rpg;
+/**
+ * Class Person
+ * 
+ * Define player of the game
+ * 
+ * @var $straight integer 
+ * @var $agility integer
+ * @var $life integer
+ * @var $weapon object defines person weapon
+ * @var $start boolean flag used to flag who winner using dice
+ * @var $winner boolean flag used to flag who is the Winner
+ */
+
+class person
+{
     private $straight;
     private $agility;
     private $life;
-    private $roll;
     private $weapon;
+    private $start;
+    private $winner;
 
+    function __construct($life, $agility, $straight, $weapon, $start = false, $winner = false)
+    {
+        $this->life     = $life;
+        $this->agility  = $agility;
+        $this->straight = $straight;
+        $this->weapon   = $weapon;
+        $this->start    = false;
+        $this->winner   = $winner;
+    }
     /**
      * Get the value of weapon
      */
@@ -26,26 +47,6 @@ Class person{
     public function setWeapon($weapon)
     {
         $this->weapon = $weapon;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of roll
-     */
-    public function getRoll()
-    {
-        return $this->roll;
-    }
-
-    /**
-     * Set the value of roll
-     *
-     * @return  self
-     */
-    public function setRoll($roll)
-    {
-        $this->roll = $roll;
 
         return $this;
     }
@@ -119,64 +120,47 @@ Class person{
     }
 
     /**
-     * Set the value of defense
+     * Getter for Start
      *
-     * @return  self
+     * @return self
      */
-    public function setDefense($defense)
+    public function getStart()
     {
-        $this->defense = $defense;
-
-        return $this;
+        return $this->start;
     }
 
     /**
-     * Get the value of attack
-     */
-    public function getAttack()
-    {
-        return $this->attack;
-    }
-
-    /**
-     * Set the value of attack
+     * Setter for Start
+     * @var boolean value of start
      *
-     * @return  self
+     * @return self
      */
-    public function setAttack($attack)
+    public function setStart($start)
     {
-        $this->attack = $attack;
+        $this->start = $start;
 
         return $this;
     }
-
-    public function Initiative($dice_human,$agility_human,$dice_orc,$agility_orc){
-        $orc_s =  intval($dice_orc) + intval($agility_orc);
-        $human_s =  intval($dice_human) + intval($agility_human);
-        echo "orc=".$orc_s."hum=".$human_s.PHP_EOL;
-        if($human_s == $orc_s){
-            $dice_human    = roll(20);
-            $dice_orc    = roll(20);
-            self::Initiative($dice_human,$agility_human,$dice_orc,$agility_orc);
-        }elseif($human_s > $orc_s){
-            return true;
-        }else{
-            return false;
-        }
+    
+    /**
+     * Getter for Winner
+     *
+     * @return boolean
+     */
+    public function getWinner()
+    {
+        return $this->winner;
     }
 
-    public function Attack($dice_human,$agility_human,$dice_orc,$agility_orc){
-        $orc_s =  intval($dice_orc) + intval($agility_orc);
-        $human_s =  intval($dice_human) + intval($agility_human);
-        echo "orc=".$orc_s."hum=".$human_s.PHP_EOL;
-        if($human_s == $orc_s){
-            $dice_human    = roll(20);
-            $dice_orc    = roll(20);
-            self::Initiative($dice_human,$agility_human,$dice_orc,$agility_orc);
-        }elseif($human_s > $orc_s){
-            return true;
-        }else{
-            return false;
-        }
+    /**
+     * Setter for Winner
+     * @var boolean winner
+     *
+     * @return self
+     */
+    public function setWinner($winner)
+    {
+        $this->winner = $winner;
+        return $this;
     }
 }
